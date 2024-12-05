@@ -1,23 +1,41 @@
-import { Box, Typography } from '@mui/material';
-import '@fontsource/ubuntu/700.css';
-import '@fontsource/ubuntu';
+import { Box, Button, Typography } from '@mui/material';
+import NavButton from './NavbarComponents/NavButton';
 
 export default function Navbar() {
 	return (
 		<Box className="flex flex-row justify-between w-full">
-			<Typography variant="h6" fontWeight="bold" fontFamily="Ubuntu">
-				JaavLex.dev
-			</Typography>
+			<NavButton
+				onClick={() => console.log('test')}
+				variant="h6"
+				weight="bold"
+				value="JaavLex.dev"
+			/>
+
 			<Box>
 				<ul className="flex flex-row gap-8">
 					<li>
-						<Typography fontFamily="Ubuntu">Projects</Typography>
+						<NavButton
+							onClick={() => console.log('test')}
+							variant="p"
+							weight="regular"
+							value="Projects"
+						/>
 					</li>
 					<li>
-						<Typography fontFamily="Ubuntu">Experiences</Typography>
+						<NavButton
+							onClick={() => console.log('test')}
+							variant="p"
+							weight="regular"
+							value="Experiences"
+						/>
 					</li>
 					<li>
-						<Typography fontFamily="Ubuntu">Socials</Typography>
+						<NavButton
+							onClick={() => console.log('test')}
+							variant="p"
+							weight="regular"
+							value="Socials"
+						/>
 					</li>
 				</ul>
 			</Box>
