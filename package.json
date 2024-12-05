@@ -12,6 +12,7 @@
     "@date-io/date-fns": "^2.16.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@fontsource/ubuntu": "^5.1.0",
     "@mui/material": "^5.10.10",
     "@mui/x-date-pickers": "^5.0.4",
     "daisyui": "^2.25.0",
