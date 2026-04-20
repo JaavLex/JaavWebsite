@@ -1,4 +1,5 @@
 import type { HeroProps } from '../../types/herotypes';
+import HeroPicture from './heropicture';
 
 export default function Hero({
 	title,
@@ -10,8 +11,9 @@ export default function Hero({
 	buttons,
 }: HeroProps) {
 	return (
-		<div className="flex flex-col items-center justify-center gap-4 w-full h-screen">
-			<div className="flex flex-col gap-4 max-w-4xl">
+		<div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-16 w-full h-screen">
+			{picture && <HeroPicture src={picture} alt={title} />}
+			<div className="flex flex-col items-center md:items-start gap-4 max-w-4xl">
 				<p className="text-[var(--fg-faint)]">
 					{fakepath &&
 						fakepath.split(' ').map((part, i) =>
@@ -24,13 +26,10 @@ export default function Hero({
 							),
 						)}
 				</p>
-				<p className="text-[var(--fg-faint)]">
-					{picture && `// Picture: ${picture}`}
-				</p>
 				<p className="text-[var(--fg-faint)] italic">
 					{fakecomment && `// ${fakecomment}`}
 				</p>
-				<h1 className="text-9xl font-bold">{title}</h1>
+				<h1 className="text-9xl font-bold text-center md:text-left">{title}</h1>
 				<p className="text-[var(--fg-faint)]">
 					{fakeconst &&
 						fakeconst.split(/("(?:\\.|[^"\\])*")/g).map((part, i) =>
@@ -43,7 +42,7 @@ export default function Hero({
 							),
 						)}
 				</p>
-				<p className="text-lg">{subtitle}</p>
+				<p className="text-lg text-center md:text-left">{subtitle}</p>
 			</div>
 		</div>
 	);

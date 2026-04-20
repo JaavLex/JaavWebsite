@@ -1,4 +1,5 @@
 import Hero from '../components/hero/main';
+import avatar from '../assets/avatar.png';
 
 export default function HomePage() {
 	return (
@@ -9,6 +10,7 @@ export default function HomePage() {
 				fakeconst='const job = "Full-Stack Developper";'
 				fakepath="~/me $ cat readme.md"
 				fakecomment="Hi ! I'm"
+				picture={avatar}
 			/>
 		</div>
 	);

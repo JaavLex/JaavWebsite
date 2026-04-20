@@ -12,4 +12,9 @@ interface HeroProps {
 	}[];
 }
 
-export type { HeroProps };
+interface HeroPictureProps {
+	src: string;
+	alt: string;
+}
+
+export type { HeroProps, HeroPictureProps };
