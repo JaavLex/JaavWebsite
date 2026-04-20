@@ -1,0 +1,93 @@
+:root {
+    --bg: oklch(0.17 0.005 240);
+    --bg-elev: oklch(0.21 0.006 240);
+    --bg-line: oklch(0.23 0.007 240);
+    --fg: oklch(0.96 0.005 85);
+    --fg-dim: oklch(0.72 0.008 240);
+    --fg-mute: oklch(0.52 0.01 240);
+    --fg-faint: oklch(0.35 0.008 240);
+    --accent: oklch(0.82 0.17 150);
+    --accent-dim: oklch(0.55 0.10 150);
+    --rule: oklch(0.28 0.007 240);
+    --warn: oklch(0.82 0.16 75);
+    --info: oklch(0.78 0.12 240);
+    --str: oklch(0.78 0.10 30);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 14px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+  .prose { font-family: 'Inter', system-ui, sans-serif; line-height: 1.7; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+  h2 {
+    font-size: 12px; font-weight: 500; color: var(--fg-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+    margin: 56px 0 24px; display: flex; align-items: baseline; gap: 10px;
+  }
+  h2::before { content: "//"; color: var(--fg-faint); }
+  h3 { font-size: 14px; font-weight: 500; color: var(--fg); margin-bottom: 12px; }
+
+  .sub { color: var(--fg-dim); font-size: 14px; margin-bottom: 24px; max-width: 640px; }
+  .sub.prose { font-size: 15px; }
+
+  /* Swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .swatch {
+    border: 1px solid var(--rule); background: var(--bg-elev);
+    display: grid; grid-template-rows: 88px auto;
+  }
+  .swatch .color { width: 100%; height: 100%; }
+  .swatch .meta { padding: 12px 14px; font-size: 11px; display: grid; gap: 4px; }
+  .swatch .name { color: var(--fg); font-weight: 500; font-size: 12px; }
+  .swatch .tk { color: var(--accent); }
+  .swatch .val { color: var(--fg-mute); font-variant-numeric: tabular-nums; }
+  .swatch .role { color: var(--fg-faint); }
+
+  /* Type specimens */
+  .type-specimen { border: 1px solid var(--rule); padding: 24px; display: grid; gap: 8px; }
+  .type-specimen .label { font-size: 10px; letter-spacing: 0.1em; color: var(--fg-mute); text-transform: uppercase; display: flex; gap: 12px; }
+  .type-specimen .label .tk { color: var(--accent); }
+  .type-specimen .sample { color: var(--fg); }
+
+  /* Token tables */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { color: var(--fg-mute); font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; background: var(--bg-elev); }
+  td code { color: var(--accent); }
+  td.role { color: var(--fg-dim); }
+  tr:hover td { background: var(--bg-elev); }
+
+  /* Code blocks */
+  pre {
+    background: var(--bg-elev); border: 1px solid var(--rule);
+    padding: 20px; font-size: 12px; line-height: 1.7;
+    overflow-x: auto; color: var(--fg);
+  }
+  pre .cmt { color: var(--fg-faint); }
+  pre .key { color: var(--info); }
+  pre .str { color: var(--str); }
+  pre .num { color: var(--warn); }
+  pre .fn { color: var(--accent); }
+
+  .tag {
+    display: inline-block; padding: 2px 8px; border: 1px solid var(--rule);
+    color: var(--fg-dim); font-size: 10px; letter-spacing: 0.04em;
+  }
+  .tag.a { color: var(--accent); border-color: var(--accent-dim); }
+
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 780px) { .cols-2 { grid-template-columns: 1fr; } }
+
+  .callout {
+    border: 1px solid var(--rule); border-left: 2px solid var(--accent);
+    padding: 14px 18px; background: var(--bg-elev);
+    font-size: 13px; color: var(--fg-dim); margin: 16px 0;
+  }
+  .callout b { color: var(--fg); font-weight: 500; }

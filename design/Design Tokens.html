@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Design Tokens — Tailwind Handoff</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.17 0.005 240);
+    --bg-elev: oklch(0.21 0.006 240);
+    --bg-line: oklch(0.23 0.007 240);
+    --fg: oklch(0.96 0.005 85);
+    --fg-dim: oklch(0.72 0.008 240);
+    --fg-mute: oklch(0.52 0.01 240);
+    --fg-faint: oklch(0.35 0.008 240);
+    --accent: oklch(0.82 0.17 150);
+    --accent-dim: oklch(0.55 0.10 150);
+    --rule: oklch(0.28 0.007 240);
+    --warn: oklch(0.82 0.16 75);
+    --info: oklch(0.78 0.12 240);
+    --str: oklch(0.78 0.10 30);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 14px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+  .prose { font-family: 'Inter', system-ui, sans-serif; line-height: 1.7; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+  h2 {
+    font-size: 12px; font-weight: 500; color: var(--fg-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+    margin: 56px 0 24px; display: flex; align-items: baseline; gap: 10px;
+  }
+  h2::before { content: "//"; color: var(--fg-faint); }
+  h3 { font-size: 14px; font-weight: 500; color: var(--fg); margin-bottom: 12px; }
+
+  .sub { color: var(--fg-dim); font-size: 14px; margin-bottom: 24px; max-width: 640px; }
+  .sub.prose { font-size: 15px; }
+
+  /* Swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .swatch {
+    border: 1px solid var(--rule); background: var(--bg-elev);
+    display: grid; grid-template-rows: 88px auto;
+  }
+  .swatch .color { width: 100%; height: 100%; }
+  .swatch .meta { padding: 12px 14px; font-size: 11px; display: grid; gap: 4px; }
+  .swatch .name { color: var(--fg); font-weight: 500; font-size: 12px; }
+  .swatch .tk { color: var(--accent); }
+  .swatch .val { color: var(--fg-mute); font-variant-numeric: tabular-nums; }
+  .swatch .role { color: var(--fg-faint); }
+
+  /* Type specimens */
+  .type-specimen { border: 1px solid var(--rule); padding: 24px; display: grid; gap: 8px; }
+  .type-specimen .label { font-size: 10px; letter-spacing: 0.1em; color: var(--fg-mute); text-transform: uppercase; display: flex; gap: 12px; }
+  .type-specimen .label .tk { color: var(--accent); }
+  .type-specimen .sample { color: var(--fg); }
+
+  /* Token tables */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { color: var(--fg-mute); font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; background: var(--bg-elev); }
+  td code { color: var(--accent); }
+  td.role { color: var(--fg-dim); }
+  tr:hover td { background: var(--bg-elev); }
+
+  /* Code blocks */
+  pre {
+    background: var(--bg-elev); border: 1px solid var(--rule);
+    padding: 20px; font-size: 12px; line-height: 1.7;
+    overflow-x: auto; color: var(--fg);
+  }
+  pre .cmt { color: var(--fg-faint); }
+  pre .key { color: var(--info); }
+  pre .str { color: var(--str); }
+  pre .num { color: var(--warn); }
+  pre .fn { color: var(--accent); }
+
+  .tag {
+    display: inline-block; padding: 2px 8px; border: 1px solid var(--rule);
+    color: var(--fg-dim); font-size: 10px; letter-spacing: 0.04em;
+  }
+  .tag.a { color: var(--accent); border-color: var(--accent-dim); }
+
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 780px) { .cols-2 { grid-template-columns: 1fr; } }
+
+  .callout {
+    border: 1px solid var(--rule); border-left: 2px solid var(--accent);
+    padding: 14px 18px; background: var(--bg-elev);
+    font-size: 13px; color: var(--fg-dim); margin: 16px 0;
+  }
+  .callout b { color: var(--fg); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:32px;flex-wrap:wrap;">
+    <span class="tag a">handoff.md</span>
+    <span style="color:var(--fg-faint);font-size:12px;">alexandre-javet / design-tokens</span>
+  </div>
+  <h1>Design tokens — Tailwind handoff</h1>
+  <p class="sub prose">Everything you need to hand-write a Tailwind config that matches the Portfolio.html design exactly: colors, type scale, spacing, radii, borders, shadows, motion. Copy values, don't copy code — you asked to wire it up yourself.</p>
+
+  <!-- ========= COLORS ========= -->
+  <h2>Colors</h2>
+  <p class="sub prose">All defined in <b style="color:var(--fg)">OKLCH</b> for perceptual consistency. Hex approximations provided for tooling that doesn't support OKLCH yet (Tailwind v4 does natively; v3 needs the hex).</p>
+
+  <h3 style="margin-top:24px;">Surface</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="color" style="background:oklch(0.17 0.005 240)"></div><div class="meta"><div class="name">bg</div><div class="tk">neutral-950</div><div class="val">oklch(0.17 0.005 240)</div><div class="val">~ #1a1c1e</div><div class="role">page background</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.21 0.006 240)"></div><div class="meta"><div class="name">bg-elev</div><div class="tk">neutral-900</div><div class="val">oklch(0.21 0.006 240)</div><div class="val">~ #222528</div><div class="role">cards, status bar, hover</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.23 0.007 240)"></div><div class="meta"><div class="name">bg-line</div><div class="tk">neutral-850</div><div class="val">oklch(0.23 0.007 240)</div><div class="val">~ #272a2d</div><div class="role">scrollbar thumb</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.28 0.007 240)"></div><div class="meta"><div class="name">rule</div><div class="tk">neutral-800</div><div class="val">oklch(0.28 0.007 240)</div><div class="val">~ #323538</div><div class="role">all borders, dividers</div></div></div>
+  </div>
+
+  <h3 style="margin-top:32px;">Foreground</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="color" style="background:oklch(0.96 0.005 85)"></div><div class="meta"><div class="name">fg</div><div class="tk">neutral-50</div><div class="val">oklch(0.96 0.005 85)</div><div class="val">~ #f5f3ef</div><div class="role">primary text, headings</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.72 0.008 240)"></div><div class="meta"><div class="name">fg-dim</div><div class="tk">neutral-300</div><div class="val">oklch(0.72 0.008 240)</div><div class="val">~ #adb0b4</div><div class="role">body prose, secondary</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.52 0.01 240)"></div><div class="meta"><div class="name">fg-mute</div><div class="tk">neutral-500</div><div class="val">oklch(0.52 0.01 240)</div><div class="val">~ #737779</div><div class="role">labels, metadata</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.35 0.008 240)"></div><div class="meta"><div class="name">fg-faint</div><div class="tk">neutral-600</div><div class="val">oklch(0.35 0.008 240)</div><div class="val">~ #4a4d50</div><div class="role">line numbers, hints</div></div></div>
+  </div>
+
+  <h3 style="margin-top:32px;">Accent & syntax</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="color" style="background:oklch(0.82 0.17 150)"></div><div class="meta"><div class="name">accent</div><div class="tk">green-400</div><div class="val">oklch(0.82 0.17 150)</div><div class="val">~ #6de69a</div><div class="role">cursor, active, CTAs</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.55 0.10 150)"></div><div class="meta"><div class="name">accent-dim</div><div class="tk">green-700</div><div class="val">oklch(0.55 0.10 150)</div><div class="val">~ #4c8a68</div><div class="role">accent borders, subtle</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.82 0.16 75)"></div><div class="meta"><div class="name">warn</div><div class="tk">amber-400</div><div class="val">oklch(0.82 0.16 75)</div><div class="val">~ #e6c14a</div><div class="role">warnings, toasts</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.78 0.12 240)"></div><div class="meta"><div class="name">info</div><div class="tk">blue-400</div><div class="val">oklch(0.78 0.12 240)</div><div class="val">~ #90b8e3</div><div class="role">info, syntax: keyword</div></div></div>
+    <div class="swatch"><div class="color" style="background:oklch(0.78 0.10 30)"></div><div class="meta"><div class="name">str</div><div class="tk">orange-300</div><div class="val">oklch(0.78 0.10 30)</div><div class="val">~ #e3a98d</div><div class="role">syntax: strings</div></div></div>
+  </div>
+
+  <!-- ========= TYPE ========= -->
+  <h2>Typography</h2>
+  <p class="sub prose">Two families. <b style="color:var(--fg)">JetBrains Mono</b> is the primary voice — used for structure, UI, and headings. <b style="color:var(--fg)">Inter</b> is the reading voice — used wherever long-form prose appears (add <code style="color:var(--accent)">class="prose"</code>).</p>
+
+  <div class="cols-2">
+    <div class="type-specimen">
+      <div class="label"><span>JetBrains Mono</span><span class="tk">font-mono</span></div>
+      <div class="sample" style="font-family:'JetBrains Mono';font-size:36px;font-weight:600;letter-spacing:-0.02em;">Alexandre Javet</div>
+      <div class="sample" style="font-family:'JetBrains Mono';color:var(--fg-dim);font-size:14px;">weights: 300 / 400 / 500 / 600 / 700</div>
+    </div>
+    <div class="type-specimen">
+      <div class="label"><span>Inter</span><span class="tk">font-sans</span></div>
+      <div class="sample prose" style="font-size:22px;font-weight:500;">Full-stack developer based in Switzerland.</div>
+      <div class="sample prose" style="color:var(--fg-dim);font-size:14px;">weights: 300 / 400 / 500 / 600</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px;">Type scale</h3>
+  <table>
+    <thead><tr><th>Token</th><th>Size</th><th>Line height</th><th>Weight</th><th>Family</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><code>display</code></td><td>clamp(42px, 7vw, 88px)</td><td>1.02</td><td>600</td><td>mono</td><td class="role">hero name</td></tr>
+      <tr><td><code>h1 / 3xl</code></td><td>32px</td><td>1.1</td><td>600</td><td>mono</td><td class="role">page titles</td></tr>
+      <tr><td><code>2xl</code></td><td>22px</td><td>1.3</td><td>500</td><td>sans</td><td class="role">large prose lede</td></tr>
+      <tr><td><code>xl</code></td><td>20px</td><td>1.3</td><td>500</td><td>mono</td><td class="role">project names</td></tr>
+      <tr><td><code>lg</code></td><td>18px</td><td>1.5</td><td>400</td><td>mono</td><td class="role">hero role line</td></tr>
+      <tr><td><code>base</code></td><td>17px</td><td>1.7</td><td>400</td><td>sans (prose)</td><td class="role">body prose</td></tr>
+      <tr><td><code>base</code></td><td>15px</td><td>1.7</td><td>400</td><td>sans (prose)</td><td class="role">secondary prose</td></tr>
+      <tr><td><code>sm</code></td><td>14px</td><td>1.6</td><td>400</td><td>mono</td><td class="role">UI default</td></tr>
+      <tr><td><code>xs</code></td><td>13px</td><td>1.5</td><td>400 / 500</td><td>mono</td><td class="role">labels, buttons</td></tr>
+      <tr><td><code>2xs</code></td><td>12px</td><td>1.5</td><td>400 / 500</td><td>mono</td><td class="role">nav, chips, metadata</td></tr>
+      <tr><td><code>3xs</code></td><td>11px</td><td>1.4</td><td>400</td><td>mono</td><td class="role">status bar, footer</td></tr>
+      <tr><td><code>4xs</code></td><td>10px</td><td>1.4</td><td>500</td><td>mono</td><td class="role">micro-labels, uppercase</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;">Letter spacing</h3>
+  <table>
+    <tbody>
+      <tr><td><code>tight</code></td><td>-0.02em</td><td class="role">display, h1</td></tr>
+      <tr><td><code>normal</code></td><td>-0.01em to 0</td><td class="role">body</td></tr>
+      <tr><td><code>wide</code></td><td>0.02em</td><td class="role">UI labels, chips</td></tr>
+      <tr><td><code>wider</code></td><td>0.05em</td><td class="role">LANG toggle, micro UI</td></tr>
+      <tr><td><code>widest</code></td><td>0.08–0.15em</td><td class="role">uppercase hints ("SCROLL")</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;">Font features</h3>
+  <pre><span class="cmt">/* globally on body */</span>
+<span class="key">font-feature-settings</span>: <span class="str">"ss01"</span>, <span class="str">"ss02"</span>, <span class="str">"cv11"</span>;  <span class="cmt">/* JetBrains Mono stylistic sets */</span>
+<span class="key">font-variant-numeric</span>: <span class="str">tabular-nums</span>;          <span class="cmt">/* on line numbers + status bar clock */</span></pre>
+
+  <!-- ========= SPACING ========= -->
+  <h2>Spacing</h2>
+  <p class="sub prose">Built on a 4px base; section rhythm is large to feel editorial. Tailwind's default spacing scale is fine — these are the specific values the design uses.</p>
+  <table>
+    <thead><tr><th>Token</th><th>Value</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><code>1</code></td><td>4px</td><td class="role">tight gaps (icons)</td></tr>
+      <tr><td><code>2</code></td><td>8px</td><td class="role">chip inner, small gaps</td></tr>
+      <tr><td><code>3</code></td><td>12px</td><td class="role">button gaps, row gaps</td></tr>
+      <tr><td><code>4</code></td><td>16px</td><td class="role">card content gaps</td></tr>
+      <tr><td><code>5</code></td><td>20px</td><td class="role">card padding</td></tr>
+      <tr><td><code>6</code></td><td>24px</td><td class="role">section heading → body</td></tr>
+      <tr><td><code>7</code></td><td>28px</td><td class="role">row padding</td></tr>
+      <tr><td><code>8</code></td><td>32px</td><td class="role">column gap on mobile</td></tr>
+      <tr><td><code>12</code></td><td>48px</td><td class="role">section horizontal padding</td></tr>
+      <tr><td><code>14</code></td><td>56px</td><td class="role">ruler width (left gutter)</td></tr>
+      <tr><td><code>16</code></td><td>64px</td><td class="role">about column gap</td></tr>
+      <tr><td><code>24</code></td><td>96px</td><td class="role">section vertical padding</td></tr>
+      <tr><td><code>30</code></td><td>120px</td><td class="role">hero top padding</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:32px;">Layout sizes</h3>
+  <table>
+    <tbody>
+      <tr><td><code>container</code></td><td>max-width 1120px</td><td class="role">main content width</td></tr>
+      <tr><td><code>prose-narrow</code></td><td>max-width 560–680px</td><td class="role">readable prose column</td></tr>
+      <tr><td><code>nav-height</code></td><td>44px</td><td class="role">top tab-bar</td></tr>
+      <tr><td><code>status-height</code></td><td>28px</td><td class="role">bottom status bar</td></tr>
+      <tr><td><code>ruler-width</code></td><td>56px</td><td class="role">fixed left gutter</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ========= BORDERS ========= -->
+  <h2>Borders, radii, shadows</h2>
+  <div class="cols-2">
+    <div>
+      <h3>Borders</h3>
+      <table>
+        <tbody>
+          <tr><td><code>width</code></td><td>1px (always)</td></tr>
+          <tr><td><code>color</code></td><td>var(--rule)</td></tr>
+          <tr><td><code>accent</code></td><td>2px solid var(--accent) for active tab underline</td></tr>
+          <tr><td><code>accent-dim</code></td><td>2px solid var(--accent-dim) for expanded card left-rail</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Radii</h3>
+      <table>
+        <tbody>
+          <tr><td><code>rounded-none</code></td><td>0</td><td class="role">everything (no rounding)</td></tr>
+          <tr><td><code>rounded-full</code></td><td>50%</td><td class="role">status dots only (8px / 6px)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><b>Rule:</b> this design uses <b>zero rounded corners</b> on containers, chips, buttons, and panels. Only tiny status dots are round. Enforce this by removing default radii.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px;">Shadows</h3>
+  <div class="callout">No drop shadows anywhere. Elevation is expressed with <b>background shifts</b> (bg → bg-elev) and <b>borders</b> only. This is deliberate — don't add them.</div>
+
+  <!-- ========= MOTION ========= -->
+  <h2>Motion</h2>
+  <table>
+    <thead><tr><th>Token</th><th>Duration</th><th>Easing</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><code>fast</code></td><td>180ms</td><td>ease</td><td class="role">chip hover, contact row</td></tr>
+      <tr><td><code>base</code></td><td>200ms</td><td>ease</td><td class="role">buttons, links</td></tr>
+      <tr><td><code>med</code></td><td>250ms</td><td>ease</td><td class="role">+/x rotation on expand</td></tr>
+      <tr><td><code>slow</code></td><td>500ms</td><td>ease</td><td class="role">project card max-height expand</td></tr>
+      <tr><td><code>reveal</code></td><td>700ms</td><td>ease</td><td class="role">scroll-in fade + 8px translateY</td></tr>
+      <tr><td><code>blink</code></td><td>1.05s step-end</td><td>—</td><td class="role">terminal cursor</td></tr>
+      <tr><td><code>typewriter</code></td><td>55ms / char</td><td>—</td><td class="role">hero name typing</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ========= TAILWIND HINTS ========= -->
+  <h2>Tailwind hints (read, don't copy)</h2>
+  <p class="sub prose">Naming suggestions so your <code style="color:var(--accent)">tailwind.config</code> lines up with how the design talks about itself. Pick what fits your setup.</p>
+
+  <h3>Colors namespace</h3>
+  <pre><span class="cmt">// suggested token names for your config</span>
+<span class="key">surface</span>:     bg, bg-elev, bg-line
+<span class="key">content</span>:     fg, fg-dim, fg-mute, fg-faint
+<span class="key">line</span>:        rule
+<span class="key">accent</span>:      accent (default), accent-dim
+<span class="key">syntax</span>:      info (blue), str (orange), warn (amber)</pre>
+
+  <h3>Font families</h3>
+  <pre><span class="key">font-mono</span>: <span class="str">'JetBrains Mono'</span>, ui-monospace, monospace    <span class="cmt">// default everywhere</span>
+<span class="key">font-sans</span>: <span class="str">'Inter'</span>, -apple-system, system-ui, sans-serif <span class="cmt">// .prose only</span></pre>
+
+  <h3>Google Fonts import (paste into your head)</h3>
+  <pre><span class="cmt">&lt;!-- preconnect + display=swap --&gt;</span>
+&lt;<span class="fn">link</span> rel=<span class="str">"preconnect"</span> href=<span class="str">"https://fonts.googleapis.com"</span>&gt;
+&lt;<span class="fn">link</span> rel=<span class="str">"preconnect"</span> href=<span class="str">"https://fonts.gstatic.com"</span> crossorigin&gt;
+&lt;<span class="fn">link</span> href=<span class="str">"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"</span> rel=<span class="str">"stylesheet"</span>&gt;</pre>
+
+  <h3>Breakpoints the design assumes</h3>
+  <table>
+    <tbody>
+      <tr><td><code>mobile</code></td><td>≤ 680px</td><td class="role">stack rows collapse, exp timeline single col</td></tr>
+      <tr><td><code>tablet</code></td><td>≤ 780px</td><td class="role">about 2-col → 1-col</td></tr>
+      <tr><td><code>small</code></td><td>≤ 800px</td><td class="role">left ruler hidden</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Global base styles you'll want</h2>
+  <pre><span class="cmt">/* body */</span>
+<span class="key">background</span>: <span class="str">var(--bg)</span>;
+<span class="key">color</span>: <span class="str">var(--fg)</span>;
+<span class="key">font-family</span>: <span class="str">'JetBrains Mono'</span>, ui-monospace, monospace;
+<span class="key">font-size</span>: <span class="num">14px</span>;
+<span class="key">line-height</span>: <span class="num">1.6</span>;
+<span class="key">-webkit-font-smoothing</span>: antialiased;
+<span class="key">font-feature-settings</span>: <span class="str">"ss01"</span>, <span class="str">"ss02"</span>, <span class="str">"cv11"</span>;
+
+<span class="cmt">/* selection */</span>
+::selection { background: <span class="str">var(--accent)</span>; color: <span class="str">var(--bg)</span>; }
+
+<span class="cmt">/* reset radii if using default Tailwind preflight */</span>
+button, input, .card { <span class="key">border-radius</span>: <span class="num">0</span>; }</pre>
+
+  <div class="callout" style="margin-top:48px;">
+    <b>That's the full system.</b> Colors, type, spacing, borders, motion — everything <code style="color:var(--accent)">Portfolio.html</code> uses. Translate these into <code style="color:var(--accent)">tailwind.config.js</code> <code style="color:var(--accent)">theme.extend</code> and you'll be matched pixel-for-pixel.
+  </div>
+
+  <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;font-size:11px;color:var(--fg-faint);">
+    <span>alexandre-javet / design-tokens</span>
+    <span>v1.0 · 2026</span>
+  </div>
+</div>
+</body>
+</html>
