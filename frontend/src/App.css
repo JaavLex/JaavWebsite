@@ -13,7 +13,7 @@
     --info: oklch(0.78 0.12 240);
     --str: oklch(0.78 0.10 30);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
   html, body {
     background: var(--bg); color: var(--fg);
     font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -24,7 +24,7 @@
   .prose { font-family: 'Inter', system-ui, sans-serif; line-height: 1.7; }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 32px 96px; }
 
-  h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+  h1 { font-size: 6vh; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
   h2 {
     font-size: 12px; font-weight: 500; color: var(--fg-mute);
     letter-spacing: 0.08em; text-transform: uppercase;
