@@ -10,6 +10,7 @@ interface HeroProps {
 		link: string;
 		onClick?: () => void;
 	}[];
+	openToOpportunities?: boolean;
 }
 
 interface HeroPictureProps {

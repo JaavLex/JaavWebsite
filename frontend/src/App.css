@@ -15,7 +15,7 @@
   }
   * { box-sizing: border-box; }
   html, body {
-    background: var(--bg); color: var(--fg);
+    color: var(--fg);
     font-family: 'JetBrains Mono', ui-monospace, monospace;
     font-size: 14px; line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -91,3 +91,39 @@
     font-size: 13px; color: var(--fg-dim); margin: 16px 0;
   }
   .callout b { color: var(--fg); font-weight: 500; }
+
+  .bg-grid {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 150px 150px;
+    animation: drift 20s linear infinite;
+  }
+
+  .typewriter-title {
+    border-right: 2px solid var(--accent); 
+    overflow: hidden; width: 0; animation: typing 3s steps(30) forwards, blink 1s step-end infinite;
+  }
+
+  .glowing-text-badge {
+    color: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes typing { to { width: 87%; } }
+  @keyframes blink { 50% { border-color: transparent; } }
+  @keyframes drift { to { background-position: 150px 150px; } }
+  @keyframes pulse {
+    0%, 100% {
+      filter:
+        drop-shadow(0 0 0.5px var(--accent))
+        drop-shadow(0 0 0.5px var(--accent));
+    }
+    50% {
+      filter:
+        drop-shadow(0 0 1px var(--accent))
+        drop-shadow(0 0 2px var(--accent));
+    }
+  }

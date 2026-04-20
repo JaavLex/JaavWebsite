@@ -1,5 +1,6 @@
 import type { HeroProps } from '../../types/herotypes';
 import HeroPicture from './heropicture';
+import { BiSolidBadgeCheck } from 'react-icons/bi';
 
 export default function Hero({
 	title,
@@ -8,6 +9,7 @@ export default function Hero({
 	fakecomment,
 	fakeconst,
 	picture,
+	openToOpportunities,
 	buttons,
 }: HeroProps) {
 	return (
@@ -29,7 +31,9 @@ export default function Hero({
 				<p className="text-[var(--fg-faint)] italic">
 					{fakecomment && `// ${fakecomment}`}
 				</p>
-				<h1 className="text-9xl font-bold text-center md:text-left">{title}</h1>
+				<h1 className="text-9xl font-bold text-center md:text-left typewriter-title whitespace-normal md:whitespace-nowrap">
+					{title}
+				</h1>
 				<p className="text-[var(--fg-faint)]">
 					{fakeconst &&
 						fakeconst.split(/("(?:\\.|[^"\\])*")/g).map((part, i) =>
@@ -43,6 +47,14 @@ export default function Hero({
 						)}
 				</p>
 				<p className="text-lg text-center md:text-left">{subtitle}</p>
+				{openToOpportunities && (
+					<pre className="flex items-center gap-2">
+						<BiSolidBadgeCheck className="glowing-text-badge" size={24} />
+						<p className="text-[var(--fg-dim)] text-2xl">
+							Open to job opportunities!
+						</p>
+					</pre>
+				)}
 			</div>
 		</div>
 	);
