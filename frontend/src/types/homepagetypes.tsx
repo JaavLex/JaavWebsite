@@ -48,6 +48,17 @@ interface ProjectsProps {
 	projects: ProjectTabProps[];
 }
 
+interface Experience {
+	timerange: string;
+	title: string;
+	company: string;
+	description?: string;
+}
+
+interface ExperiencesProps {
+	experiences: Experience[];
+}
+
 export type {
 	HomepageProps,
 	Trait,
@@ -58,4 +69,6 @@ export type {
 	ProjectLinks,
 	ProjectTabProps,
 	ProjectsProps,
+	Experience,
+	ExperiencesProps,
 };

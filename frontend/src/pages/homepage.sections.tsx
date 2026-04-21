@@ -1,14 +1,9 @@
-import './App.css';
-import Background from './components/background/main';
-import NavBar from './components/navbar/main';
-import HomePage from './pages/homepage';
-import TraitsBlock from './components/homepage/traits';
-import Stack from './components/homepage/stack/main';
-import Projects from './components/homepage/projects/main';
-import type { PageSectionProps } from './types/globaltypes';
-import Experiences from './components/homepage/experience/main';
+import TraitsBlock from '../components/homepage/traits';
+import Stack from '../components/homepage/stack/main';
+import Projects from '../components/homepage/projects/main';
+import type { PageSectionProps } from '../types/globaltypes';
 
-const sections: PageSectionProps[] = [
+export const sections: PageSectionProps[] = [
 	{
 		title: 'About Me',
 		direction: 'row',
@@ -84,49 +79,4 @@ const sections: PageSectionProps[] = [
 			/>
 		),
 	},
-	{
-		title: 'Experience',
-		direction: 'col',
-		id: 'experience',
-		children: (
-			<>
-				<p>My work experience timeline</p>
-				<Experiences
-					experiences={[
-						{
-							timerange: '2019 - 2023',
-							title: 'Full-Stack dev',
-							company: 'EPFL',
-							description:
-								'Anim deserunt labore ut enim quis officia consectetur ipsum deserunt adipisicing aliqua incididunt. Incididunt dolore officia qui commodo mollit ut. Velit aliqua magna consequat et proident Lorem sit.',
-						},
-						{
-							timerange: '2023 - 2024',
-							title: 'Supply Officer',
-							company: 'Swiss Army',
-							description:
-								'Anim deserunt labore ut enim quis officia consectetur ipsum deserunt adipisicing aliqua incididunt. Incididunt dolore officia qui commodo mollit ut. Velit aliqua magna consequat et proident Lorem sit.',
-						},
-					]}
-				/>
-			</>
-		),
-	},
 ];
-
-function App() {
-	return (
-		<>
-			<Background />
-			<NavBar
-				Buttons={sections.map(section => ({
-					name: section.title,
-					link: section.id,
-				}))}
-			/>
-			<HomePage sections={sections} />
-		</>
-	);
-}
-
-export default App;
