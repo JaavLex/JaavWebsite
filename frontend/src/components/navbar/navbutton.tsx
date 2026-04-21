@@ -13,6 +13,9 @@ export default function NavButton({ name, link }: NavButtonProps) {
 				py-2 
 				h-12
 		"
+			onClick={() => {
+				document.getElementById(link)?.scrollIntoView({ behavior: 'smooth' });
+			}}
 		>
 			#
 			<span className="text-[var(--fg-dim)] group-hover:text-[var(--fg)] mr-1 pl-1">

@@ -6,6 +6,8 @@ interface GButtonProps {
 
 interface PageSectionProps {
 	title: string;
+	direction: 'col' | 'row';
+	id: string;
 	children?: React.ReactNode;
 }
 

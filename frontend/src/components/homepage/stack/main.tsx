@@ -23,8 +23,7 @@ export default function Stack({ stacks }: StackProps) {
 						</td>
 						<td className="bg-(--bg) pl-8 py-2 md:py-0">
 							<div className="flex flex-row flex-wrap gap-2 items-center">
-								{stack.techs &&
-									stack.techs.map(tech => <StackBadge name={tech.name} />)}
+								{stack.techs && stack.techs.map(tech => <StackBadge name={tech} />)}
 							</div>
 						</td>
 					</tr>
