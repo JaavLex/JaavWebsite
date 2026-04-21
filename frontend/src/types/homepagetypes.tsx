@@ -59,6 +59,16 @@ interface ExperiencesProps {
 	experiences: Experience[];
 }
 
+interface Contact {
+	name: string;
+	link: string;
+	href: string;
+}
+
+interface ContactsProps {
+	contacts: Contact[];
+}
+
 export type {
 	HomepageProps,
 	Trait,
@@ -71,4 +81,6 @@ export type {
 	ProjectsProps,
 	Experience,
 	ExperiencesProps,
+	Contact,
+	ContactsProps,
 };

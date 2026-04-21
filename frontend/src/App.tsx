@@ -7,6 +7,7 @@ import Stack from './components/homepage/stack/main';
 import Projects from './components/homepage/projects/main';
 import type { PageSectionProps } from './types/globaltypes';
 import Experiences from './components/homepage/experience/main';
+import Contacts from './components/homepage/contact/main';
 
 const sections: PageSectionProps[] = [
 	{
@@ -106,6 +107,30 @@ const sections: PageSectionProps[] = [
 							company: 'Swiss Army',
 							description:
 								'Anim deserunt labore ut enim quis officia consectetur ipsum deserunt adipisicing aliqua incididunt. Incididunt dolore officia qui commodo mollit ut. Velit aliqua magna consequat et proident Lorem sit.',
+						},
+					]}
+				/>
+			</>
+		),
+	},
+	{
+		title: 'Contact Me',
+		direction: 'col',
+		id: 'contactme',
+		children: (
+			<>
+				<p>If you'd like to contact me !</p>
+				<Contacts
+					contacts={[
+						{
+							name: 'e-mail',
+							link: 'javetalexandre@gmail.com',
+							href: 'mailto:javetalexandre@gmail.com',
+						},
+						{
+							name: 'github',
+							link: 'github.com/JaavLex/',
+							href: 'https://github.com/JaavLex/',
 						},
 					]}
 				/>
