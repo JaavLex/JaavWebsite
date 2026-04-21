@@ -5,16 +5,13 @@ export default function GButton({ text, type = 'primary', onClick }: GButtonProp
 		<button
 			className={`group px-4 py-2 border-2 ${
 				type === 'primary'
-					? 'text-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--bg)]'
-					: type === 'secondary' &&
-						'border-[var(--bg-line)] hover:bg-[var(--bg-elev)]'
+					? 'text-(--accent) hover:bg-(--accent) hover:text-(--bg)'
+					: type === 'secondary' && 'border-(--bg-line) hover:bg-(--bg-elev)'
 			}`}
 			onClick={onClick}
 		>
 			{type === 'secondary' && (
-				<span className="text-[var(--fg-faint)] group-hover:text-[var(--accent)] mr-1">
-					$
-				</span>
+				<span className="text-(--fg-faint) group-hover:text-(--accent) mr-1">$</span>
 			)}
 			{text}
 		</button>

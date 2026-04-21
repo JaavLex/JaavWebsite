@@ -19,6 +19,11 @@ interface Stack {
 	techs: string[];
 }
 
+interface StackBadgeProps {
+	name: string;
+	hover: boolean;
+}
+
 interface StackProps {
 	stacks: Stack[];
 }
@@ -49,6 +54,7 @@ export type {
 	TraitsTypes,
 	Stack,
 	StackProps,
+	StackBadgeProps,
 	ProjectLinks,
 	ProjectTabProps,
 	ProjectsProps,

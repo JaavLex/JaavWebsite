@@ -21,7 +21,7 @@ const sections: PageSectionProps[] = [
 						growing constantly with a wide range of technologies.
 					</div>
 
-					<div className="text-[var(--fg-mute)] text-justify">
+					<div className="text-(--fg-mute) text-justify">
 						Outside of full-stack developpement, experimenting with game
 						developpement and creating game engines from scratch with libraries in
 						C++. Still active as a swiss army supply officer (Lieutenant), platoon

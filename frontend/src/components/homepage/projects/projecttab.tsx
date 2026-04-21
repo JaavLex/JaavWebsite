@@ -23,14 +23,14 @@ export default function ProjectTab({
 		<div className="w-full">
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className={`flex flex-row items-center h-48 w-full ${!isOpen ? 'bg-[var(--bg)]' : 'bg-[var(--bg-elev)]'} hover:bg-[var(--bg-elev)] border-1 border-[var(--rule)] px-9 py-2 gap-8`}
+				className={`flex flex-row items-center h-48 w-full ${!isOpen ? 'bg-(--bg)' : 'bg-(--bg-elev)'} hover:bg-(--bg-elev) border border-(--rule) px-9 py-2 gap-8`}
 			>
-				<p className="text-[var(--fg-faint)]">{id && (id < 10 ? `0${id}` : id)}</p>
+				<p className="text-(--fg-faint)">{id && (id < 10 ? `0${id}` : id)}</p>
 				<div className="flex flex-col w-full justify-start gap-4">
 					<h3 className="text-3xl font-bold text-left">{name}</h3>
 					<p className="text-left">{summary}</p>
 					<div className="flex flex-row gap-2 w-full">
-						{techs && techs.map(tech => <StackBadge name={tech} />)}
+						{techs && techs.map(tech => <StackBadge name={tech} hover={false} />)}
 					</div>
 				</div>
 
@@ -42,9 +42,9 @@ export default function ProjectTab({
     					flex
     					items-center 
     					justify-center 
-    					text-[var(--accent)]
-    					border-1 
-    					border-[var(--accent)]
+    					text-(--accent)
+    					border
+    					border-(--accent)
     					h-12 
     					min-w-18 
     					p-4
@@ -53,7 +53,7 @@ export default function ProjectTab({
 								completed
 							</div>
 						) : (
-							<p className="text-[var(--accent)]">
+							<p className="text-(--accent)">
 								<IoMdCheckmarkCircleOutline />
 							</p>
 						)
@@ -63,18 +63,18 @@ export default function ProjectTab({
     					flex
     					items-center 
     					justify-center 
-    					text-[var(--info)]
-    					border-1 
-    					border-[var(--info)]
+    					text-(--info)
+    					border
+    					border-(--info)
     					h-12 
     					min-w-18 
     					p-4
     					"
 						>
-							completed
+							ongoing
 						</div>
 					) : (
-						<p className="text-[var(--info)]">
+						<p className="text-(--info)">
 							<IoMdHourglass />
 						</p>
 					)}
@@ -87,10 +87,10 @@ export default function ProjectTab({
 				}`}
 				style={{ height: isOpen ? 'auto' : '0px' }}
 			>
-				<div className="flex flex-col gap-4 p-4 border-1 border-[var(--rule)] bg-[var(--bg)] px-8 md:px-16">
+				<div className="flex flex-col gap-4 p-4 border border-(--rule) bg-(--bg) px-8 md:px-16">
 					<p>{description}</p>
 					{highlights && (
-						<ul className="list-disc marker:text-[var(--accent)] pl-8">
+						<ul className="list-disc marker:text-(--accent) pl-8">
 							{highlights.map(highlight => (
 								<li>{highlight}</li>
 							))}
