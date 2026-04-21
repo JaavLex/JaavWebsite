@@ -1,3 +1,5 @@
+import type { GButtonProps } from './globaltypes';
+
 interface HeroProps {
 	title: string;
 	subtitle: string;
@@ -5,11 +7,7 @@ interface HeroProps {
 	fakecomment?: string;
 	fakeconst?: string;
 	picture?: string;
-	buttons?: {
-		name: string;
-		link: string;
-		onClick?: () => void;
-	}[];
+	buttons?: GButtonProps[];
 	openToOpportunities?: boolean;
 }
 

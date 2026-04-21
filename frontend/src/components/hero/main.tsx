@@ -2,6 +2,7 @@ import { useMediaQuery } from 'react-responsive';
 import type { HeroProps } from '../../types/herotypes';
 import HeroPicture from './heropicture';
 import { BiSolidBadgeCheck } from 'react-icons/bi';
+import GButton from '../global/button';
 
 export default function Hero({
 	title,
@@ -63,6 +64,9 @@ export default function Hero({
 					<p className="text-lg text-justify px-10 md:text-left md:px-0">
 						{subtitle}
 					</p>
+					<div className="flex gap-4">
+						{buttons && buttons.map((button, i) => <GButton key={i} {...button} />)}
+					</div>
 				</div>
 			</div>
 		</div>

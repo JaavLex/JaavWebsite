@@ -32,7 +32,6 @@
     margin: 56px 0 24px; display: flex; align-items: baseline; gap: 10px;
   }
   h2::before { content: "//"; color: var(--fg-faint); }
-  h3 { font-size: 14px; font-weight: 500; color: var(--fg); margin-bottom: 12px; }
 
   .sub { color: var(--fg-dim); font-size: 14px; margin-bottom: 24px; max-width: 640px; }
   .sub.prose { font-size: 15px; }
