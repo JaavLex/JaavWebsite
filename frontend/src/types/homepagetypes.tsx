@@ -8,4 +8,17 @@ interface TraitsTypes {
 	traits?: Trait[];
 }
 
-export type { Trait, TraitsTypes };
+interface StackBadgeProps {
+	name: string;
+}
+
+interface Stack {
+	category: string;
+	techs: StackBadgeProps[];
+}
+
+interface StackProps {
+	stacks: Stack[];
+}
+
+export type { Trait, TraitsTypes, StackBadgeProps, Stack, StackProps };

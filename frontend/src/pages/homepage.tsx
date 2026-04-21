@@ -2,6 +2,7 @@ import Hero from '../components/hero/main';
 import avatar from '../assets/avatar.png';
 import PageSection from '../components/global/section';
 import TraitsBlock from '../components/homepage/traits';
+import Stack from '../components/homepage/stack/main';
 
 export default function HomePage() {
 	return (
@@ -30,7 +31,7 @@ export default function HomePage() {
 			/>
 			<div>
 				<PageSection title="About Me">
-					<div className="flex flex-row gap-8">
+					<div className="flex flex-col md:flex-row gap-8">
 						<div className="flex flex-col gap-4">
 							<div className="text-justify">
 								Full-stack developer curious about new technologies and
@@ -50,6 +51,17 @@ export default function HomePage() {
 						<TraitsBlock
 							title="profile.traits[]"
 							traits={[{ name: 'test', description: 'test2' }]}
+						/>
+					</div>
+				</PageSection>
+				<PageSection title="stack">
+					<div className="flex flex-col gap-8">
+						<p>An overview of the Tech Stack that I have experience in !</p>
+						<Stack
+							stacks={[
+								{ category: 'test', techs: [{ name: 'test2' }, { name: 'test3' }] },
+								{ category: 'test2', techs: [{ name: 'test4' }, { name: 'test5' }] },
+							]}
 						/>
 					</div>
 				</PageSection>

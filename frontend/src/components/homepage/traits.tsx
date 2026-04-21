@@ -2,8 +2,8 @@ import type { TraitsTypes } from '../../types/homepagetypes';
 
 export default function TraitsBlock({ title, traits }: TraitsTypes) {
 	return (
-		<pre className="min-w-xl">
-			<h3 className="text-[var(--fg-faint)]">// {title}</h3>
+		<pre className="md:min-w-xl">
+			<h3 className="text-[var(--fg-faint)] pb-2">// {title}</h3>
 			{traits && (
 				<table className="border-0 w-full">
 					{traits &&

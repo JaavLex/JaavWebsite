@@ -55,13 +55,7 @@
   .type-specimen .label .tk { color: var(--accent); }
   .type-specimen .sample { color: var(--fg); }
 
-  /* Token tables */
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
-  th { color: var(--fg-mute); font-weight: 500; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; background: var(--bg-elev); }
-  td code { color: var(--accent); }
-  td.role { color: var(--fg-dim); }
-  tr:hover td { background: var(--bg-elev); }
+
 
   /* Code blocks */
   pre {
