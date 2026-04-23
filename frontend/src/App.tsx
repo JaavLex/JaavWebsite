@@ -150,6 +150,7 @@ function App() {
 				}))}
 			/>
 			<HomePage sections={sections} />
+			<footer>© 2026 Alexandre Javet</footer>
 		</>
 	);
 }
