@@ -6,6 +6,7 @@ interface NavBarProps {
 interface NavButtonProps {
 	name: string;
 	link: string;
+	onClick?: () => void;
 }
 
 export type { NavBarProps, NavButtonProps };

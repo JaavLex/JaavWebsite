@@ -1,0 +1,19 @@
+{
+	"nav": {
+		"openMenu": "Ouvrir le menu",
+		"closeMenu": "Fermer le menu"
+	},
+	"project": {
+		"status": {
+			"done": "Terminé",
+			"ongoing": "En cours"
+		}
+	},
+	"common": {
+		"loading": "Chargement…",
+		"error": {
+			"generic": "Une erreur est survenue lors du chargement du contenu.",
+			"retry": "Réessayer"
+		}
+	}
+}

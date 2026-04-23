@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_hero_buttons",
+  "info": {
+    "displayName": "Hero Button",
+    "icon": "cursor"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["files"]
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["primary", "secondary"],
+      "required": true,
+      "default": "primary"
+    }
+  }
+}

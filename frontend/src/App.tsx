@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { Navigate, Route, Routes, useParams } from 'react-router-dom';
+import i18n, { DEFAULT_LOCALE, isLocale, type Locale } from './i18n';
 import './App.css';
 import Background from './components/background/main';
 import NavBar from './components/navbar/main';
@@ -139,7 +142,32 @@ const sections: PageSectionProps[] = [
 	},
 ];
 
-function App() {
+function detectLocale(): Locale {
+	const stored = localStorage.getItem('locale');
+	if (isLocale(stored ?? undefined)) return stored as Locale;
+	const nav = typeof navigator !== 'undefined' ? navigator.language.slice(0, 2) : '';
+	if (isLocale(nav)) return nav;
+	return DEFAULT_LOCALE;
+}
+
+function LocaleRedirect() {
+	return <Navigate to={`/${detectLocale()}`} replace />;
+}
+
+function LocalizedShell() {
+	const { locale } = useParams();
+
+	useEffect(() => {
+		if (!isLocale(locale)) return;
+		if (i18n.language !== locale) i18n.changeLanguage(locale);
+		document.documentElement.lang = locale;
+		localStorage.setItem('locale', locale);
+	}, [locale]);
+
+	if (!isLocale(locale)) {
+		return <Navigate to={`/${detectLocale()}`} replace />;
+	}
+
 	return (
 		<>
 			<Background />
@@ -152,6 +180,16 @@ function App() {
 			<HomePage sections={sections} />
 			<footer>© 2026 Alexandre Javet</footer>
 		</>
+	);
+}
+
+function App() {
+	return (
+		<Routes>
+			<Route path="/" element={<LocaleRedirect />} />
+			<Route path="/:locale/*" element={<LocalizedShell />} />
+			<Route path="*" element={<LocaleRedirect />} />
+		</Routes>
 	);
 }
 

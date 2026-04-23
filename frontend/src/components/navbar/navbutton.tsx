@@ -1,20 +1,21 @@
 import type { NavButtonProps } from '../../types/navbartypes';
 
-export default function NavButton({ name, link }: NavButtonProps) {
+export default function NavButton({ name, link, onClick }: NavButtonProps) {
 	return (
 		<button
 			className="
 				group
-				text-(--fg-faint)  
-				border-l 
-				border-r 
-				border-(--rule) 
-				px-6 
-				py-2 
+				text-(--fg-faint)
+				border-l
+				border-r
+				border-(--rule)
+				px-6
+				py-2
 				h-12
 		"
 			onClick={() => {
 				document.getElementById(link)?.scrollIntoView({ behavior: 'smooth' });
+				onClick?.();
 			}}
 		>
 			#

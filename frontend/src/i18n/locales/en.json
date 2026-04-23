@@ -1,0 +1,19 @@
+{
+	"nav": {
+		"openMenu": "Open menu",
+		"closeMenu": "Close menu"
+	},
+	"project": {
+		"status": {
+			"done": "Done",
+			"ongoing": "In Progress"
+		}
+	},
+	"common": {
+		"loading": "Loading…",
+		"error": {
+			"generic": "Something went wrong loading content.",
+			"retry": "Retry"
+		}
+	}
+}
