@@ -1,0 +1,99 @@
+# Development compose — hot reload, ports exposed to host, no TLS.
+# Usage: `docker compose up --build`
+#
+# Secrets come from the root `.env` (copy `.env.example`).
+
+name: jaav-dev
+
+services:
+    db:
+        image: postgres:16-alpine
+        container_name: jaav-db-dev
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB:-strapi}
+            POSTGRES_USER: ${POSTGRES_USER:-strapi}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - internal
+        # Port intentionally NOT published — access via `docker compose exec db psql ...`
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-strapi} -d ${POSTGRES_DB:-strapi}']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        security_opt:
+            - no-new-privileges:true
+
+    strapi:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+            target: dev
+        container_name: jaav-strapi-dev
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+        environment:
+            NODE_ENV: development
+            HOST: 0.0.0.0
+            PORT: 1337
+            DATABASE_CLIENT: postgres
+            DATABASE_HOST: db
+            DATABASE_PORT: 5432
+            DATABASE_NAME: ${POSTGRES_DB:-strapi}
+            DATABASE_USERNAME: ${POSTGRES_USER:-strapi}
+            DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+            DATABASE_SSL: 'false'
+            APP_KEYS: ${APP_KEYS:?APP_KEYS must be set}
+            API_TOKEN_SALT: ${API_TOKEN_SALT:?API_TOKEN_SALT must be set}
+            ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET:?ADMIN_JWT_SECRET must be set}
+            TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:?TRANSFER_TOKEN_SALT must be set}
+            JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
+            ENCRYPTION_KEY: ${ENCRYPTION_KEY:?ENCRYPTION_KEY must be set}
+        volumes:
+            # Mount source for hot reload; keep the image's node_modules.
+            - ./server:/app
+            - /app/node_modules
+            - strapi_uploads:/app/public/uploads
+        # Bind to loopback on the host to avoid exposing the admin panel on LAN.
+        ports:
+            - '127.0.0.1:1337:1337'
+        networks:
+            - internal
+            - web
+        security_opt:
+            - no-new-privileges:true
+
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+            target: dev
+        container_name: jaav-frontend-dev
+        restart: unless-stopped
+        environment:
+            # In dev, the browser hits Strapi directly on the host port.
+            VITE_STRAPI_URL: http://localhost:1337
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+        ports:
+            - '127.0.0.1:5173:5173'
+        networks:
+            - web
+        security_opt:
+            - no-new-privileges:true
+
+networks:
+    internal:
+        driver: bridge
+    web:
+        driver: bridge
+
+volumes:
+    postgres_data:
+    strapi_uploads:

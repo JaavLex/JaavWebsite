@@ -1,6 +1,8 @@
 import type { PageSectionProps } from './globaltypes';
+import type { HeroProps } from './herotypes';
 
 interface HomepageProps {
+	heroProps: HeroProps;
 	sections: PageSectionProps[];
 }
 

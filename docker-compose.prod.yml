@@ -1,0 +1,181 @@
+# Production compose — built images, no host mounts, TLS via Caddy.
+# Usage: `docker compose -f docker-compose.prod.yml up -d --build`
+#
+# Only Caddy publishes ports (80/443). Everything else is on private Docker networks.
+# DNS for ${DOMAIN} must point to this host for Let's Encrypt to issue a cert.
+
+name: jaav
+
+services:
+    db:
+        image: postgres:16-alpine
+        container_name: jaav-db
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB:-strapi}
+            POSTGRES_USER: ${POSTGRES_USER:-strapi}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+            POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
+            POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - internal
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-strapi} -d ${POSTGRES_DB:-strapi}']
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FOWNER
+            - SETGID
+            - SETUID
+        deploy:
+            resources:
+                limits:
+                    memory: 512M
+                    cpus: '1.0'
+
+    strapi:
+        build:
+            context: ./server
+            dockerfile: Dockerfile
+            target: prod
+        container_name: jaav-strapi
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+        environment:
+            NODE_ENV: production
+            HOST: 0.0.0.0
+            PORT: 1337
+            DATABASE_CLIENT: postgres
+            DATABASE_HOST: db
+            DATABASE_PORT: 5432
+            DATABASE_NAME: ${POSTGRES_DB:-strapi}
+            DATABASE_USERNAME: ${POSTGRES_USER:-strapi}
+            DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+            DATABASE_SSL: 'false'
+            APP_KEYS: ${APP_KEYS:?APP_KEYS must be set}
+            API_TOKEN_SALT: ${API_TOKEN_SALT:?API_TOKEN_SALT must be set}
+            ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET:?ADMIN_JWT_SECRET must be set}
+            TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT:?TRANSFER_TOKEN_SALT must be set}
+            JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
+            ENCRYPTION_KEY: ${ENCRYPTION_KEY:?ENCRYPTION_KEY must be set}
+            # Tell Strapi admin which public URL it lives behind so redirect URLs are correct.
+            URL: https://${DOMAIN}
+            # Restrict CORS to the public domain; Caddy still proxies same-origin.
+            CORS_ORIGIN: https://${DOMAIN}
+        volumes:
+            - strapi_uploads:/app/public/uploads
+        # No published ports — only Caddy on the `web` network reaches Strapi.
+        networks:
+            - internal
+            - web
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - CHOWN
+            - SETGID
+            - SETUID
+        tmpfs:
+            - /app/.strapi:uid=1000,gid=1000
+            - /app/.tmp:uid=1000,gid=1000
+        healthcheck:
+            test:
+                ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://localhost:1337/_health']
+            interval: 30s
+            timeout: 5s
+            retries: 3
+            start_period: 60s
+        deploy:
+            resources:
+                limits:
+                    memory: 1G
+                    cpus: '2.0'
+
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+            target: prod
+            args:
+                # Empty → bundled frontend uses relative `/api/...` paths; Caddy proxies them.
+                VITE_STRAPI_URL: ''
+        container_name: jaav-frontend
+        restart: unless-stopped
+        networks:
+            - web
+        security_opt:
+            - no-new-privileges:true
+        read_only: true
+        tmpfs:
+            - /tmp
+            - /var/cache/nginx
+            - /var/run
+        cap_drop:
+            - ALL
+        healthcheck:
+            test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://localhost:8080/']
+            interval: 30s
+            timeout: 5s
+            retries: 3
+        deploy:
+            resources:
+                limits:
+                    memory: 128M
+                    cpus: '0.5'
+
+    caddy:
+        image: caddy:2-alpine
+        container_name: jaav-caddy
+        restart: unless-stopped
+        depends_on:
+            - strapi
+            - frontend
+        environment:
+            DOMAIN: ${DOMAIN:?DOMAIN must be set}
+            ACME_EMAIL: ${ACME_EMAIL:?ACME_EMAIL must be set (a real email, not the placeholder)}
+        ports:
+            - '80:80'
+            - '443:443'
+            - '443:443/udp' # HTTP/3 (QUIC)
+        volumes:
+            - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+            - caddy_data:/data
+            - caddy_config:/config
+        networks:
+            - web
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+        cap_add:
+            - NET_BIND_SERVICE
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
+                    cpus: '1.0'
+
+networks:
+    internal:
+        driver: bridge
+        internal: true # No outbound internet — db/strapi can only talk to each other
+    web:
+        driver: bridge
+
+volumes:
+    postgres_data:
+    strapi_uploads:
+    caddy_data:
+    caddy_config:

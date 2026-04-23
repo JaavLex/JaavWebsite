@@ -1,0 +1,57 @@
+# ----------------------------------------------------------------------------
+# Caddy reverse proxy
+# - Automatic HTTPS for public domains via Let's Encrypt (ACME_EMAIL must be set).
+# - For DOMAIN=localhost, Caddy auto-issues an internal self-signed cert via
+#   its local CA — fine for testing, untrusted by browsers.
+# ----------------------------------------------------------------------------
+
+{
+	email {$ACME_EMAIL}
+	# Reduce default header noise. Metrics endpoint NOT enabled (would expose
+	# unauthenticated /metrics on the admin port).
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	# Headers shared by all responses (TLS, sniff protection, framing, referrer).
+	header {
+		Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		Cross-Origin-Resource-Policy "same-origin"
+		X-Permitted-Cross-Domain-Policies "none"
+		-Server
+		-X-Powered-By
+	}
+
+	# Strapi API + admin. CSP intentionally NOT set here so Strapi's own
+	# helmet-based CSP (which permits the inline/eval the admin UI needs) wins.
+	@strapi path /api/* /uploads/* /admin* /content-manager* /content-type-builder* /upload* /i18n* /users-permissions* /_health
+	handle @strapi {
+		reverse_proxy strapi:1337 {
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {http.request.header.X-Forwarded-For},{remote_host}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+
+	# Frontend SPA. Strict CSP: no inline/eval JS; only same-origin assets.
+	# 'unsafe-inline' on style-src is required by Tailwind/React generated styles.
+	handle {
+		header Content-Security-Policy "default-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; manifest-src 'self';"
+		reverse_proxy frontend:8080
+	}
+
+	log {
+		output stdout
+		format console
+		level INFO
+	}
+}

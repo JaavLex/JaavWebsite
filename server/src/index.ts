@@ -86,12 +86,12 @@ async function seedHero(strapi: Core.Strapi) {
 			{
 				label: '> view.github()',
 				href: 'https://github.com/JaavLex',
-				variant: 'primary',
+				variant: 'primary' as const,
 			},
 			{
 				label: 'Download CV',
 				href: 'https://www.linkedin.com/in/alexandre-javet/',
-				variant: 'secondary',
+				variant: 'secondary' as const,
 			},
 		],
 	};
@@ -109,12 +109,12 @@ async function seedHero(strapi: Core.Strapi) {
 			{
 				label: '> view.github()',
 				href: 'https://github.com/JaavLex',
-				variant: 'primary',
+				variant: 'primary' as const,
 			},
 			{
 				label: 'Télécharger CV',
 				href: 'https://www.linkedin.com/in/alexandre-javet/',
-				variant: 'secondary',
+				variant: 'secondary' as const,
 			},
 		],
 	};

@@ -1,0 +1,14 @@
+# Environment (keep .env.example in git, not the real one)
+.env
+*.env.local
+.env.*.local
+!.env.example
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Docker-related runtime artifacts
+**/node_modules
