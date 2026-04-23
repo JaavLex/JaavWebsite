@@ -17,6 +17,7 @@ Have a mobile and desktop friendly platform, easily accessible by anybody even i
 - Typescript
 - Strapi
 - sqlite
+- docker
 
 ### Design principles
 
